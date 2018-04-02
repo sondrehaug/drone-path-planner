@@ -1,6 +1,6 @@
 function write_trajectory(X,ts,path)
-fileID = fopen('path.txt','w');
-fprintf(fileID,'-1.500 1.500 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000\n');
+fileID = fopen('path.txt','a');
+%fprintf(fileID,'-1.500 1.500 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000\n');
 count = 0;
 for k = 1:size(path,1)-1
     subPath = X(4*(k-1)+1:4*k,1:3);
@@ -30,7 +30,6 @@ for k = 1:size(path,1)-1
     count = count + length(t);
 end
 %fprintf(fileID,'-1.500 -1.500 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000\n');
-fclose(fileID);
 plot3(x,y,z);
 end
 

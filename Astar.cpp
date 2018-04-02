@@ -6,7 +6,8 @@
 #include <list>
 #include <string>
 #include <algorithm>
-
+#include <Windows.h>
+/*
 using std::vector;
 using namespace std;
 // En funksjon som har paramtre og returverdi
@@ -62,7 +63,7 @@ int hScore(Node current, Node end) {
 
 };
 
-void createGrid(Node (&grid)[11][11], Node End) {
+void createGrid(Node (&grid)[11][11], Node End, Node Start) {
 	int rows = 11;
 	int cols = 11;
 	for (int i = 0; i < rows; i++) {
@@ -70,6 +71,9 @@ void createGrid(Node (&grid)[11][11], Node End) {
 			grid[i][j].x = 2.5 - (i*0.5);
 			grid[i][j].y = 2.5 - (j*0.5);
 			grid[i][j].h = hScore(grid[i][j],End);
+			grid[i][j].g = 1000;
+			grid[i][j].f = grid[i][j].h + grid[i][j].g;
+
 			grid[i][j].obstacle = false;
 		}
 	}
@@ -94,6 +98,10 @@ void createGrid(Node (&grid)[11][11], Node End) {
 			int x_pos = 2 * (2.5 - (stod(x)));
 			int y_pos = 2 * (2.5 - (stod(y)));
 			grid[x_pos][y_pos].obstacle = true;
+			grid[x_pos+1][y_pos].obstacle = true;
+			grid[x_pos-1][y_pos].obstacle = true;
+			grid[x_pos][y_pos+1].obstacle = true;
+			grid[x_pos][y_pos-1].obstacle = true;
 		}
 	}
 	obstacleFile.close();
@@ -136,8 +144,12 @@ void Astar(Node (&grid)[11][11], Node Start, Node End) {
 					cout << current.x << " " << current.y << endl;
 					current = *current.parent;
 				}
-				path_x.push_back(Start.x);
-				path_y.push_back(Start.y);
+				if (count == 0) {
+					path_x.push_back(Start.x);
+					path_y.push_back(Start.y);
+					count++;
+				}
+
 				ofstream pathFile;
 				pathFile.open("coordinates.txt", ofstream::app);
 			if (pathFile.is_open()) {
@@ -145,9 +157,7 @@ void Astar(Node (&grid)[11][11], Node Start, Node End) {
 					pathFile << path_x[i] << " " << path_y[i] << endl;
 				}
 			}
-			if (count == 2) {
-				pathFile.close();
-			}
+
 			return;
 
 		}
@@ -155,6 +165,7 @@ void Astar(Node (&grid)[11][11], Node Start, Node End) {
 		closedList.push_back(current);
 		current.g = gScore(current, Start);
 		int tent_g = 0;
+
 		vector<Node>* neighbours = new vector<Node>(0);
 		int i = 2 * (2.5 - current.x);
 		int j = 2 * (2.5 - current.y);
@@ -188,9 +199,9 @@ void Astar(Node (&grid)[11][11], Node Start, Node End) {
 			list<Node>::iterator findIt = find(closedList.begin(), closedList.end(), (*neighbours)[i]);
 			if (findIt == closedList.end()) {
 
-				list<Node>::iterator findIt = find(openList.begin(), openList.end(), (*neighbours)[i]);
-				if (findIt == openList.end()) {
-
+				
+				
+					
 					tent_g = current.g + gScore((*neighbours)[i], current);
 					int x = int(2 * (2.5 - (*neighbours)[i].x));
 					int y = int(2 * (2.5 - (*neighbours)[i].y));
@@ -199,18 +210,22 @@ void Astar(Node (&grid)[11][11], Node Start, Node End) {
 						grid[x][y].g = tent_g;
 						grid[x][y].f = (grid[x][y].g + hScore((*neighbours)[i], End));
 					}
+				list<Node>::iterator findIt = find(openList.begin(), openList.end(), (*neighbours)[i]);
+				if (findIt == openList.end()) {
 					openList.push_back(grid[x][y]);
 				}
 			}
 		}
 		delete neighbours;
+		Sleep(1000);
 	}
 }
 int main() {
 
 	Node grid[11][11];
+	Node Beginning(-1.5, 1.5);
 	Node End(2, 0);
-	createGrid(grid, End);
+	createGrid(grid, End , Beginning);
 	for (int i = 0; i < 11; i++) {
 		for (int j = 0; j < 11; j++) {
 			cout << setw(6) << grid[i][j].obstacle;
@@ -223,7 +238,10 @@ int main() {
 	ofstream pathFinder("coordinates.txt");
 	pathFinder.close();
 	Astar(grid, Start, MidPoint);
-	createGrid(grid, Goal);
+	Beginning = Node(2, 0);
+	End = Node(-1.5, -1.5);
+	createGrid(grid, End, Beginning);
+	cout << "Calculating new path" << endl;
 	Astar(grid, MidPoint, Goal);
 	return 0;
-}
+}*/

@@ -21,10 +21,11 @@ struct Node {
 	double f;
 	bool obstacle;
 	Node *parent;
-	Node::Node() : x(0), y(0), g(1000), h(1000), f(1000), obstacle(0), parent(nullptr){
+
+	Node() : x(0), y(0), g(1000), h(1000), f(1000), obstacle(0), parent(nullptr){
 
 	};
-	Node::Node(double x, double y) : x(x), y(y) {
+	Node(double x, double y) : x(x), y(y) {
 		this->obstacle = false;
 	};
 	bool operator==(const Node& rhs) const {
@@ -100,6 +101,7 @@ void createGrid(Node (&grid)[11][11], Node End) {
 }
 
 void Astar(Node (&grid)[11][11], Node Start, Node End) {
+	int count = 0;
 	int rows = 11;
 	int cols = 11;
 	list<Node> openList{};
@@ -113,6 +115,10 @@ void Astar(Node (&grid)[11][11], Node Start, Node End) {
 	while (!(current == End)) {
 		score = 1000;
 		for (list<Node>::iterator it = openList.begin(); it != openList.end(); ++it) {
+			if (it->f == score) {
+				if (it->h < current.h)
+					current = *it;
+			}
 			if (it->f < score) {
 				current = *it;
 				score = it->f;
@@ -120,7 +126,8 @@ void Astar(Node (&grid)[11][11], Node Start, Node End) {
 		}
 		cout << current.x << " " << current.y << endl;
 		if (current.x == End.x && current.y == End.y) {
-			cout << "Goal!!!";
+			count++;
+			cout << "Goal!!!" << endl;
 			vector<double> path_x;
 			vector<double> path_y;
 				while (!(current == Start)) {
@@ -129,14 +136,18 @@ void Astar(Node (&grid)[11][11], Node Start, Node End) {
 					cout << current.x << " " << current.y << endl;
 					current = *current.parent;
 				}
-			
-			ofstream pathFile("Path.txt");
+				path_x.push_back(Start.x);
+				path_y.push_back(Start.y);
+				ofstream pathFile;
+				pathFile.open("coordinates.txt", ofstream::app);
 			if (pathFile.is_open()) {
 				for (int i = path_x.size()-1; i > -1; i--) {
 					pathFile << path_x[i] << " " << path_y[i] << endl;
 				}
 			}
-			pathFile.close();
+			if (count == 2) {
+				pathFile.close();
+			}
 			return;
 
 		}
@@ -195,7 +206,7 @@ void Astar(Node (&grid)[11][11], Node Start, Node End) {
 		delete neighbours;
 	}
 }
-void main() {
+int main() {
 
 	Node grid[11][11];
 	Node End(2, 0);
@@ -209,5 +220,10 @@ void main() {
 	Node Start = grid[8][2];
 	Node MidPoint = grid[1][5];
 	Node Goal = grid[8][8];
+	ofstream pathFinder("coordinates.txt");
+	pathFinder.close();
 	Astar(grid, Start, MidPoint);
+	createGrid(grid, Goal);
+	Astar(grid, MidPoint, Goal);
+	return 0;
 }

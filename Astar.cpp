@@ -7,12 +7,9 @@
 #include <string>
 #include <algorithm>
 #include <Windows.h>
-/*
+
 using std::vector;
 using namespace std;
-// En funksjon som har paramtre og returverdi
-// Sagt på en annen måte: En funksjon som tar inn argumenter og
-// returnerer en verdi
 
 struct Node {
 	double x;
@@ -244,4 +241,4 @@ int main() {
 	cout << "Calculating new path" << endl;
 	Astar(grid, MidPoint, Goal);
 	return 0;
-}*/
+}

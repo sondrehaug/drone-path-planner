@@ -6,7 +6,8 @@
 #include <list>
 #include <string>
 #include <algorithm>
-#include <Windows.h>
+//#include <Windows.h>
+
 
 using std::vector;
 using namespace std;
@@ -214,7 +215,7 @@ void Astar(Node (&grid)[11][11], Node Start, Node End) {
 			}
 		}
 		delete neighbours;
-		Sleep(1000);
+		//sleep(1000);
 	}
 }
 int main() {

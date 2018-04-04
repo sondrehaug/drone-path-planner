@@ -74,6 +74,7 @@ void createGrid(Node (&grid)[11][11], Node End, Node Start) {
 		for (int j = 0; j < cols; j++) {
 			grid[i][j].x = 2.5 - (i*0.5);
 			grid[i][j].y = 2.5 - (j*0.5);
+
 			grid[i][j].h = hScore(grid[i][j],End);
 			grid[i][j].g = 1000;
 			grid[i][j].f = grid[i][j].h + grid[i][j].g;
@@ -102,10 +103,15 @@ void createGrid(Node (&grid)[11][11], Node End, Node Start) {
 			int x_pos = 2 * (2.5 - (stod(x)));
 			int y_pos = 2 * (2.5 - (stod(y)));
 			grid[x_pos][y_pos].obstacle = true;
-			grid[x_pos+1][y_pos].obstacle = true;
-			grid[x_pos-1][y_pos].obstacle = true;
-			grid[x_pos][y_pos+1].obstacle = true;
-			grid[x_pos][y_pos-1].obstacle = true;
+			
+			if ( x_pos < (rows-1) )
+				grid[x_pos+1][y_pos].obstacle = true;
+			if ( x_pos > 0)
+				grid[x_pos-1][y_pos].obstacle = true;
+			if (y_pos < (cols - 1))
+				grid[x_pos][y_pos+1].obstacle = true;
+			if (y_pos > 0)
+				grid[x_pos][y_pos-1].obstacle = true;
 		}
 	}
 	obstacleFile.close();

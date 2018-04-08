@@ -7,13 +7,13 @@ dist = path(2:size(path,1),:)-path(1:size(path,1)-1,:);
 dist2 = sqrt(dist(:,1).^2 +dist(:,2).^2 +dist(:,3).^2 );
 
 if (mode == 0)
-    dt_start = 4;
+    dt_start = 2;
     dt_stop = 0;
 elseif(mode == 1)
     dt_start = 0;
-    dt_stop = 2;
+    dt_stop = 0;
 else
-    dt_start = 0;
+    dt_start = 2;
     dt_stop = 1;
 end
         for i  = 2:size(path,1)

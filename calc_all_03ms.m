@@ -2,25 +2,23 @@
 clear;    
 clc;
 isWithinConstraints = false;
-avg_v = 0.33;
+avg_v = 0.305;
 iterations = 0;
 
 while ~isWithinConstraints
 iterations = iterations + 1;
 close all;
 delete('path7.txt');
-fileID = fope
-n('coordinates_task1_03ms.txt','r');
-formatSpec 
-= "%f %f";
+fileID = fopen('coordinates_task1_03ms.txt','r');
+formatSpec = "%f %f";
 A = fscanf(fileID,formatSpec, [2 inf])';
 fclose(fileID);
 fileID_path = fopen('path7.txt','a');
 
 
 %----------------- takeoff from A --------------------%
-delta = 0.185;
-%delta = -0.1
+%delta = 0.185;
+delta = -0.1
 mode = 0;
 avg_v_takeoff = 0.2;
 path_takeoff= [A(1,1), A(1,2),delta;
@@ -31,8 +29,6 @@ X_takeoff = traj_opt7(path_takeoff, ts_takeoff);
 [x_takeoff, y_takeoff, z_takeoff] = write_trajectory7(X_takeoff, ts_takeoff, path_takeoff);
 hold on;
 
-
-
 %------------------ Stay in point A -----------------%
 for i = 1:200
     fprintf(fileID_path,'%6.3f %6.3f %6.3f %6.3f %6.3f %6.3f %6.3f %6.3f %6.3f 0.000 0.000\n',...
@@ -40,7 +36,7 @@ for i = 1:200
 end
 
 %------------------ point A to B --------------------%
-
+if (false)
 mode = 1;
 point_b = 1;
 for i = 1:size(A,1)    
@@ -77,46 +73,40 @@ ts_B_to_C = time_planning(path_B_to_C,avg_v,mode);
 X_B_to_C = traj_opt7(path_B_to_C, ts_B_to_C);
 write_trajectory7(X_B_to_C,ts_B_to_C,path_B_to_C);
 
-%------------------ landing at point C --------------------%
-mode = 2;
-path_C_to_ground = [A(end,1),A(end,2), delta;
-                    A(end,1),A(end,2), -0.5];
-ts_C_to_ground = time_planning(path_C_to_ground, 0.1 ,mode);
-X_C_to_ground = traj_opt7(path_C_to_ground, ts_C_to_ground);
-write_trajectory7(X_C_to_ground, ts_C_to_ground, path_C_to_ground);
-
 fclose(fileID_path);
 
-% 
-%     path_midair(:,1) = A(:, 1);
-%     path_midair(:,2) = A(:, 2);
-%     
-%     path_z = ones(1,size(path_midair,1))';
-%     path_z = path_z + delta;
-%     path_midair(:,3) = path_z;
-%     path_z = ones(1,size(path_midair,1))';
-%     path_z(size(path_midair,1),1) = 0;
-%     path_z(size(path_midair,1)-3,1) = 0.8;
-%     path_z(size(path_midair,1)-2,1) = 0.5;
-%     path_z(size(path_midair,1)-1,1) = 0.2;
-%     path_z = path_z + delta;
-%    
-%     mode = 2;
-% 
-%     path_midair(:,3) = path_z;
-% 
-%     ts_midair = time_planning(path_midair,avg_v,mode);
-%     X_midair = traj_opt7(path_midair, ts_midair);
-%     write_trajectory7(X_midair,ts_midair,path_midair);
+end
 
-%     fclose(fileID_path);
+
+    path_midair(:,1) = A(:, 1);
+    path_midair(:,2) = A(:, 2);
+    
+    path_z = ones(1,size(path_midair,1))';
+    path_z = path_z + delta;
+    path_midair(:,3) = path_z;
+    path_z = ones(1,size(path_midair,1))';
+    path_z(size(path_midair,1),1) = 0;
+    path_z(size(path_midair,1)-3,1) = 0.8;
+    path_z(size(path_midair,1)-2,1) = 0.5;
+    path_z(size(path_midair,1)-1,1) = 0.2;
+    path_z = path_z + delta;
+   
+    mode = 2;
+
+    path_midair(:,3) = path_z;
+
+    ts_midair = time_planning(path_midair,avg_v,mode);
+    X_midair = traj_opt7(path_midair, ts_midair);
+    write_trajectory7(X_midair,ts_midair,path_midair);
+
+    fclose(fileID_path);
 
     isWithinConstraints = checkWithinConstraints();
     avg_v = avg_v * 0.95;
 
 end
 
-tot_time = ts_takeoff(end) + ts_A_to_B(end) + ts_B_to_C(end)
+tot_time = ts_takeoff(end) + ts_midair(end)% + ts_A_to_B(end) + ts_B_to_C(end)
 
 
 % Plotting the obstacles: 

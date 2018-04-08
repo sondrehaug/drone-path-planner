@@ -2,17 +2,15 @@
 clear;    
 clc;
 isWithinConstraints = false;
-avg_v = 0.33;
+avg_v = 1;
 iterations = 0;
 
 while ~isWithinConstraints
 iterations = iterations + 1;
 close all;
 delete('path7.txt');
-fileID = fope
-n('coordinates_task1_03ms.txt','r');
-formatSpec 
-= "%f %f";
+fileID = fopen('coordinates_task1_03ms.txt','r');
+formatSpec = "%f %f";
 A = fscanf(fileID,formatSpec, [2 inf])';
 fclose(fileID);
 fileID_path = fopen('path7.txt','a');
@@ -30,8 +28,6 @@ ts_takeoff = time_planning(path_takeoff, avg_v_takeoff,mode);
 X_takeoff = traj_opt7(path_takeoff, ts_takeoff);
 [x_takeoff, y_takeoff, z_takeoff] = write_trajectory7(X_takeoff, ts_takeoff, path_takeoff);
 hold on;
-
-
 
 %------------------ Stay in point A -----------------%
 for i = 1:200
@@ -53,29 +49,32 @@ for i = 1:size(A,1)
     
 end
 
-path_A_to_B = [A(1:point_b,1),A(1:point_b,2)];
-path_A_to_B = path_2D_to_3D(path_A_to_B, mode);
-ts_A_to_B = time_planning(path_A_to_B,avg_v,mode);
-X_A_to_B = traj_opt7(path_A_to_B, ts_A_to_B);
-write_trajectory7(X_A_to_B,ts_A_to_B,path_A_to_B);
+point_before_b = point_b - 1;
+point_after_b = point_b + 1;
+
+path_A_to_before_B = [A(1:point_before_b,1),A(1:point_before_b,2)];
+path_A_to_before_B = path_2D_to_3D(path_A_to_before_B, mode);
+ts_A_to_before_B = time_planning(path_A_to_before_B,avg_v,mode);
+X_A_to_before_B = traj_opt7(path_A_to_before_B, ts_A_to_before_B);
+write_trajectory7(X_A_to_before_B,ts_A_to_before_B,path_A_to_before_B);
 hold on;
-%------------------ Stay in point B -----------------%
+%---------------- Travel for point before B to after B ---------------%
+avg_v_B = 0.10;
+path_BB = [A(point_before_b:point_after_b,1),A(point_before_b:point_after_b,2)];
+path_BB = path_2D_to_3D(path_BB, mode);
+ts_BB = time_planning(path_BB,avg_v_B,mode);
+X_BB = traj_opt7(path_BB, ts_BB);
+write_trajectory7(X_BB,ts_BB,path_BB);
+hold on;
 
-% for i = 1:60
-% 
-% fprintf(fileID_path,'%6.3f %6.3f %6.3f %6.3f %6.3f %6.3f %6.3f %6.3f %6.3f 0.000 0.000\n',...
-%          A(point_b,1),A(point_b,2),1+delta,0,0,0,0,0,0);
-% 
-% end
-
-%------------------ point B to C --------------------%
+%---------------- Travel from point after B to C ---------------%
 mode = 2;
-
-path_B_to_C = [A(point_b:size(A,1),1),A(point_b:size(A,1),2)];
+path_B_to_C = [A(point_after_b:size(A,1),1),A(point_after_b:size(A,1),2)];
 path_B_to_C = path_2D_to_3D(path_B_to_C, mode);
 ts_B_to_C = time_planning(path_B_to_C,avg_v,mode);
 X_B_to_C = traj_opt7(path_B_to_C, ts_B_to_C);
 write_trajectory7(X_B_to_C,ts_B_to_C,path_B_to_C);
+hold on
 
 %------------------ landing at point C --------------------%
 mode = 2;
@@ -116,7 +115,7 @@ fclose(fileID_path);
 
 end
 
-tot_time = ts_takeoff(end) + ts_A_to_B(end) + ts_B_to_C(end)
+tot_time = ts_takeoff(end) + ts_A_to_before_B(end) + ts_B_to_C(end)
 
 
 % Plotting the obstacles: 

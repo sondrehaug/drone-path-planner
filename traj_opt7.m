@@ -60,7 +60,7 @@ for i = 1:n
        idx = idx + 1;
    end
 
-   % constraint 3: \ddot{x}_k(t_k) = \ddot{x}_{k+1}(t_k)
+   % constraint 3: \ddot{x}_k(t_k) = \dCopy_of_dot{x}_{k+1}(t_k)
    % e.g. \ddot{x}_1(t_1) = \ddot{x}_2(t_1)
    % there are in total m-1 constraints
    for k = 1:(m-1)
@@ -148,6 +148,7 @@ for i = 1:n
    A(idx, 8*(k-1)+1:8*k, i) = [210*ts(k+1)^4, 120*ts(k+1)^3, 60*ts(k+1)^2, 24*ts(k+1), 6, 0, 0, 0];
    Y(idx,i) = 0;
    idx = idx + 1;
-   %A(:,:,i) = A(:,:,i) + eye(8*m)*eps;
+   A(:,:,i) = A(:,:,i) + eye(8*m)*eps;
    X(:,i) = A(:,:,i)\Y(:,i);
+   %X(:,i) = pinv(A(:,:,i),0)*Y(:,1);
 end

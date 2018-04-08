@@ -16,21 +16,20 @@ for k = 1:size(path,1)-1
          z(i+count) = sum(vec3.*pol);
          v_x(i+count) = sum(vec1.*d_pol);
          v_y(i+count) = sum(vec2.*d_pol);
-         v_z(i+count) = sum(vec2.*d_pol);
+         v_z(i+count) = sum(vec3.*d_pol);
          a_x(i+count) = sum(vec1.*dd_pol);
          a_y(i+count) = sum(vec2.*dd_pol);
-         a_z(i+count) = sum(vec1.*dd_pol);
+         a_z(i+count) = sum(vec3.*dd_pol);
              
-         fprintf(fileID,'%6.3f %6.3f %6.3f %6.3f %6.3f %6.3f %6.3f %6.3f %6.3f 0.000 0.000\n',...
+         fprintf(fileID,'%.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f 0.000 0.000\n',...
              x(i+count),y(i+count),z(i+count), v_x(i+count),v_y(i+count),v_z(i+count),a_x(i+count),a_y(i+count),a_z(i+count));
 
-     
+            
     end
     
     count = count + length(t);
 end
-%fprintf(fileID,'-1.500 -1.500 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.000\n');
-%fclose(fileID);
+
 plot3(x,y,z,'g');
 end
 

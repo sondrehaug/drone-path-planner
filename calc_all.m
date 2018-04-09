@@ -9,10 +9,8 @@ while ~isWithinConstraints
 iterations = iterations + 1;
 close all;
 delete('path7.txt');
-fileID = fope
-n('coordinates_task1_03ms.txt','r');
-formatSpec 
-= "%f %f";
+fileID = fopen('coordinates.txt','r');
+formatSpec = "%f %f";
 A = fscanf(fileID,formatSpec, [2 inf])';
 fclose(fileID);
 fileID_path = fopen('path7.txt','a');
@@ -61,12 +59,12 @@ write_trajectory7(X_A_to_B,ts_A_to_B,path_A_to_B);
 hold on;
 %------------------ Stay in point B -----------------%
 
-% for i = 1:60
-% 
-% fprintf(fileID_path,'%6.3f %6.3f %6.3f %6.3f %6.3f %6.3f %6.3f %6.3f %6.3f 0.000 0.000\n',...
-%          A(point_b,1),A(point_b,2),1+delta,0,0,0,0,0,0);
-% 
-% end
+for i = 1:60
+
+fprintf(fileID_path,'%6.3f %6.3f %6.3f %6.3f %6.3f %6.3f %6.3f %6.3f %6.3f 0.000 0.000\n',...
+         A(point_b,1),A(point_b,2),1+delta,0,0,0,0,0,0);
+
+end
 
 %------------------ point B to C --------------------%
 mode = 2;

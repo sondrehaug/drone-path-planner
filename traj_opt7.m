@@ -60,7 +60,7 @@ for i = 1:n
        idx = idx + 1;
    end
 
-   % constraint 3: \ddot{x}_k(t_k) = \dCopy_of_dot{x}_{k+1}(t_k)
+   % constraint 3: \ddot{x}_k(t_k) = \ddot{x}_{k+1}(t_k)
    % e.g. \ddot{x}_1(t_1) = \ddot{x}_2(t_1)
    % there are in total m-1 constraints
    for k = 1:(m-1)

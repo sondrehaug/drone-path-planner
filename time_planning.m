@@ -41,14 +41,15 @@ dist2 = sqrt(dist(:,1).^2 +dist(:,2).^2 +dist(:,3).^2 );
 if (mode == 0)
     dt_start = 0;
     dt_stop = 0;
-% Middair
 elseif(mode == 1)
     dt_start = 2.5;
     dt_stop = 0;
-% Landing
-else
-    
-
+elseif(mode == 2)
+    dt_start = 0;
+    dt_stop = 0;
+elseif(mode == 3)
+    dt_start = 0;
+    dt_stop = 0;
 end
         
         % Calculates time interval for each subpath

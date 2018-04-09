@@ -3,7 +3,7 @@ clc;
 
 fprintf('This is a simulation for a drone path planner. Please select the desired option:\n');
 disp('1: Task 1 - Path from A-B-C navigating around 3 obstacles with a stop in B\n');
-disp('2: Task 1 - Path from A-B-C navigating around 3 obstacles with 0.3m/s through B\n');
+disp('2: Task 2 - Path from A-B-C navigating around 3 obstacles with 0.3m/s through B\n');
 disp('3: Task 3 - Path from A-B-C navigating around 4 obstacles with a stop in B\n');
 taskChoice = input('Choice: ');
 
@@ -70,13 +70,13 @@ if (taskChoice == 1 || taskChoice == 3)
 
     for i = 1:60
     fprintf(fileID_path,'%.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f 0.000 0.000\n',...
-             WayPoints(point_B_index,1), A(point_B_index,2), 1+delta,0,0,0,0,0,0);
+             WayPoints(point_B_index,1), WayPoints(point_B_index,2), 1+delta,0,0,0,0,0,0);
     end
 
     %------------------ point B to C --------------------%
     mode = 2; % Decending in the last 4 waypoints
 
-    path_B_to_C = WayPoints(point_b_index:end,:);
+    path_B_to_C = WayPoints(point_B_index:end,:);
     path_B_to_C = path_2D_to_3D(path_B_to_C, mode);
     ts_B_to_C = time_planning(path_B_to_C, avg_v, mode);
     X_B_to_C = traj_opt7(path_B_to_C, ts_B_to_C);

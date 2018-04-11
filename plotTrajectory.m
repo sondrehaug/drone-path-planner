@@ -55,6 +55,6 @@ plot(time_vec_Js, A(:,9));
 title('Jerk');
 xlabel('Time[s]')
 ylabel('Jerk[m/s^3]')
-legend('Js_h','a_z')
+legend('Js_h','Js_z')
 
 end

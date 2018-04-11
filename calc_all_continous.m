@@ -39,6 +39,7 @@ end
 WayPoints = fscanf(fileID,formatSpec, [2 inf])';
 fclose(fileID);
 fileID_path = fopen('path7.txt','a');
+fileID_Js = fopen('Js.txt', 'a');
 
 %----------------- Takeoff from A --------------------%
 mode = 0;
@@ -54,6 +55,7 @@ hold on;
 for i = 1:200
     fprintf(fileID_path,'%.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f 0.000 0.000\n',...
              WayPoints(1,1),WayPoints(1,2), 1 + delta, 0, 0, 0, 0, 0, 0);
+    fprintf(fileID_Js,'%.3f %.3f %.3f\n', 0, 0, 0);
 end
 
 if (taskChoice == 1 || taskChoice == 3)
@@ -71,6 +73,7 @@ if (taskChoice == 1 || taskChoice == 3)
     for i = 1:60
     fprintf(fileID_path,'%.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f 0.000 0.000\n',...
              WayPoints(point_B_index,1), WayPoints(point_B_index,2), 1+delta,0,0,0,0,0,0);
+    fprintf(fileID_Js,'%.3f %.3f %.3f\n', 0, 0, 0);
     end
 
     %------------------ point B to C --------------------%
@@ -102,6 +105,7 @@ X_C_to_ground = traj_opt7(path_C_to_ground, ts_C_to_ground);
 write_trajectory7(X_C_to_ground, ts_C_to_ground, path_C_to_ground);
 
 fclose(fileID_path);
+fclose(fileID_Js);
 
 isWithinConstraints = checkWithinConstraints();
 avg_v = avg_v * 0.95;

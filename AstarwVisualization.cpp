@@ -6,13 +6,13 @@
 #include <list>
 #include <string>
 #include <algorithm>
-#include <Windows.h>
-#include <SFML\Graphics.hpp>
+//#include <Windows.h>
+//#include <SFML\Graphics.hpp>
 
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
-#include "Minesweeper.h"
+//#include "Minesweeper.h"
 
 using std::vector;
 using namespace std;
@@ -50,7 +50,7 @@ struct Node {
 		return *this;
 	}
 };
-
+/*
 const sf::Color open_fill_color = sf::Color::Green, closed_fill_color(192, 192, 192);
 const sf::Color number_colors[9] = {
 	sf::Color::White,
@@ -67,7 +67,7 @@ const sf::Color mine_color = sf::Color::Red;
 const sf::Color obstacle_color = sf::Color::Black;
 const sf::Color closedList_fill_color = sf::Color::Green;
 const sf::Color openList_fill_color = sf::Color::Red;
-
+*/
 const int tile_size = 96;
 const int border_size = 2;
 
@@ -181,6 +181,7 @@ void Astar(Node(&grid)[11][11], Node Start, Node End) {
 					pathFile << path_x[i] << " " << path_y[i] << endl;
 				}
 			}
+			/*
 			srand(time(nullptr));
 			sf::Font font;
 			int height = 11, width = 11, mines = 0;
@@ -260,7 +261,7 @@ void Astar(Node(&grid)[11][11], Node Start, Node End) {
 					}
 
 				}
-			}
+			}*/
 			return;
 		}
 		openList.remove(current);
@@ -318,6 +319,7 @@ void Astar(Node(&grid)[11][11], Node Start, Node End) {
 			}
 		}
 		delete neighbours;
+		/*
 		srand(time(nullptr));
 		sf::Font font;
 		int height = 11, width = 11, mines = 0;
@@ -398,7 +400,7 @@ void Astar(Node(&grid)[11][11], Node Start, Node End) {
 				}
 
 			}
-		}
+		}*/
 		//Sleep(3000);
 	}
 

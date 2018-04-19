@@ -438,6 +438,10 @@ void Astar(Node(&grid)[11][11], Node Start, Node End) {
 					openList.push_back(grid[x][y]);
 
 				}
+				else {
+					openList.erase(findIt);
+					openList.push_back(grid[x][y]);
+				}
 
 			}
 

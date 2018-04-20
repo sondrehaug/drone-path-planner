@@ -22,7 +22,8 @@
 
 function ts = time_planning(path, avg_v,mode)
 
-% mode = 0 (take off), mode = 1 (middair), mode = 2 (landing)
+% mode = 0 (take off), mode = 1 (middair), mode = 2 (descend), mode = 3
+% (landing)
 
 % Initialization
 count = 0;
@@ -37,16 +38,18 @@ dist = path(2:size(path,1),:)-path(1:size(path,1)-1,:);
 dist2 = sqrt(dist(:,1).^2 +dist(:,2).^2 +dist(:,3).^2 );
 
 
-% Take off
+% adding time for larger curved path
+% mode = 0 (take off), mode = 1 (middair), mode = 2 (descend), mode = 3
+% (landing)
 if (mode == 0)
     dt_start = 0;
     dt_stop = 0;
 elseif(mode == 1)
-    dt_start = 2.5;
-    dt_stop = 0;
+    dt_start = 1.0;
+    dt_stop = 1.0;
 elseif(mode == 2)
-    dt_start = 0;
-    dt_stop = 0;
+    dt_start = 1.0;
+    dt_stop = 1.0;
 elseif(mode == 3)
     dt_start = 0;
     dt_stop = 0;
@@ -57,9 +60,9 @@ end
             ts(i) = dist2(i-1)/avg_v + ts(i-1);
             
             if i == 2
-                ts(i) = ts(i)+dt_start;
+                ts(i) = ts(i)+dt_start; %Add dt for first subpath
             elseif i == size(path,1)
-                ts(i) = ts(i)+dt_stop;
+                ts(i) = ts(i)+dt_stop; %Add dt for last subpath
             end
             
             % Check if last element in path is point B

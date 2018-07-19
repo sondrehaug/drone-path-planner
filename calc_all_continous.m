@@ -10,7 +10,7 @@ taskChoice = input('Choice: ');
 
 % Setting some initial variables:
 isWithinConstraints = false;
-avg_v = 1;
+avg_v = 1.0;
 iterations = 0;
 delta = 0.185;
 avg_v_takeoff = 0.2;

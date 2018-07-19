@@ -48,8 +48,8 @@ elseif(mode == 1)
     dt_start = 1.0;
     dt_stop = 1.0;
 elseif(mode == 2)
-    dt_start = 1.0;
-    dt_stop = 1.0;
+    dt_start = 0;
+    dt_stop = 0;
 elseif(mode == 3)
     dt_start = 0;
     dt_stop = 0;
